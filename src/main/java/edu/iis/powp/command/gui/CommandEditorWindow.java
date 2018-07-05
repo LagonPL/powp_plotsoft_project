@@ -21,6 +21,7 @@ import javax.swing.text.AbstractDocument.Content;
 import edu.iis.powp.app.gui.WindowComponent;
 import edu.iis.powp.command.ICompoundCommand;
 import edu.iis.powp.command.IPlotterCommand;
+import edu.iis.powp.command.SetPositionCommand;
 import edu.iis.powp.command.complex.ComplexCommand;
 import edu.iis.powp.command.manager.PlotterCommandManager;
 import edu.iis.powp.observer.Subscriber;
@@ -82,8 +83,16 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
-
+		
 		content.add(btnLoadCommand, c);
+
+		JButton btnAddCommand = new JButton("Add Command");
+		btnAddCommand.addActionListener((ActionEvent e) -> this.addCommand());
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
+		c.gridx = 0;
+
+		content.add(btnAddCommand, c);
 
 		String[] selections = { "init", "init", "init", "init", "init", "init", "init" };
 		list = new JList(selections);
@@ -95,10 +104,16 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
 	// TODO WAŻNE!!!
 	private void addCommand() {
 		AddCommandWindow temp = new AddCommandWindow(commandManager);
+		
+		//IPlotterCommand buff = iterator.next();\
+		//commands.add("Command " + ++count + ": " + buff.toString());
 		int selected = list.getSelectedIndex();
 		if (selected > 0) {
-			ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
-			currentCommand.addCommand(selected + 1, temp.addCommand());
+			//ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
+			IPlotterCommand buff = temp.addCommand();
+			commands.add("Command " + 3 + ": ");
+			System.out.println("test");
+			//currentCommand.addCommand(selected + 1, temp.addCommand());
 		}
 		content.remove(list);
 		list = new JList(commands.toArray());

@@ -67,10 +67,10 @@ public class AddCommandWindow extends JFrame implements WindowComponent {
 	public IPlotterCommand addCommand() {
 		posX = Integer.parseInt(posXField.getText());
 		posY = Integer.parseInt(posYField.getText());
-		if (list.getSelectedValue() == "DrawToCommand") {
+		if (list.getSelectedValue().equals("DrawToCommand")) {
 			System.out.println(new DrawToCommand(posX, posY).toString());
 			return new DrawToCommand(posX, posY);
-		} else if (list.getSelectedValue() == "SetPositionCommand") {
+		} else if (list.getSelectedValue().equals("SetPositionCommand")) {
 			System.out.println(new SetPositionCommand(posX, posY).toString());
 			return new SetPositionCommand(posX, posY);
 		} else
