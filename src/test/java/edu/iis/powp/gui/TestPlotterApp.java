@@ -9,6 +9,7 @@ import edu.iis.client.plottermagic.ClientPlotter;
 import edu.iis.client.plottermagic.IPlotter;
 import edu.iis.powp.adapter.LineAdapterPlotterDriver;
 import edu.iis.powp.app.Application;
+import edu.iis.powp.command.gui.AddCommandWindow;
 import edu.iis.powp.command.gui.CommandEditorWindow;
 import edu.iis.powp.command.gui.CommandManagerWindow;
 import edu.iis.powp.command.gui.CommandManagerWindowCommandChangeObserver;
@@ -81,9 +82,12 @@ public class TestPlotterApp {
 		CommandManagerWindowCommandChangeObserver windowObserver = new CommandManagerWindowCommandChangeObserver(
 				commandManager);
 		CommandsFeature.getPlotterCommandManager().getChangePublisher().addSubscriber(windowObserver);
-		
+
 		CommandEditorWindow commandedit = new CommandEditorWindow(CommandsFeature.getPlotterCommandManager());
 		application.addWindowComponent("Current Command Edit", commandedit);
+
+		AddCommandWindow add = new AddCommandWindow(CommandsFeature.getPlotterCommandManager());
+		application.addWindowComponent("Add Command Window", add);
 	}
 
 	/**
@@ -110,20 +114,18 @@ public class TestPlotterApp {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				Application app = new Application();
-				DrawerFeature.setupDrawerPlugin(app);
-				CommandsFeature.setupCommandManager();
+		EventQueue.invokeLater(() -> {
+			Application app = new Application();
+			DrawerFeature.setupDrawerPlugin(app);
+			CommandsFeature.setupCommandManager();
 
-				setupDrivers(app);
-				setupPresetTests(app);
-				setupCommandTests(app);
-				setupLogger(app);
-				setupWindows(app);
+			setupDrivers(app);
+			setupPresetTests(app);
+			setupCommandTests(app);
+			setupLogger(app);
+			setupWindows(app);
 
-				app.setVisibility(true);
-			}
+			app.setVisibility(true);
 		});
 	}
 
