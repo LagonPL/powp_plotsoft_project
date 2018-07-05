@@ -36,6 +36,7 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
 	private JList list;
 	private GridBagConstraints c;
 	private List<String> commands;
+
 	public CommandEditorWindow(PlotterCommandManager commandManager) {
 		this.commandManager = commandManager;
 		setupContainerUIComponents();
@@ -50,14 +51,13 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
 		this.commandManager = commandManager;
 
 		c = new GridBagConstraints();
-		
+
 		JButton btnMoveUP = new JButton("Move Up");
 		btnMoveUP.addActionListener((ActionEvent e) -> this.moveUp());
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 1;
 		c.gridx = 0;
 		c.weighty = 1;
-
 
 		content.add(btnMoveUP, c);
 
@@ -84,45 +84,60 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
 		c.gridx = 0;
 
 		content.add(btnLoadCommand, c);
-		
-		String[] selections = {"init","init","init","init","init","init","init"};
+
+		String[] selections = { "init", "init", "init", "init", "init", "init", "init" };
 		list = new JList(selections);
 		c.fill = GridBagConstraints.BOTH;
 		c.gridx = 0;
-		content.add(list,c);
+		content.add(list, c);
+	}
+
+	// TODO WAŻNE!!!
+	private void addCommand() {
+		AddCommandWindow temp = new AddCommandWindow(commandManager);
+		int selected = list.getSelectedIndex();
+		if (selected > 0) {
+			ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
+			currentCommand.addCommand(selected + 1, temp.addCommand());
+		}
+		content.remove(list);
+		list = new JList(commands.toArray());
+		content.add(list, c);
+		content.revalidate();
+		list.setSelectedIndex(selected - 1);
 	}
 
 	private void moveUp() {
-		int selected= list.getSelectedIndex();
-		if(selected>0) {
-			Collections.swap(commands,selected,selected-1);
+		int selected = list.getSelectedIndex();
+		if (selected > 0) {
+			Collections.swap(commands, selected, selected - 1);
 			ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
 			currentCommand.changeSequence(selected - 1, selected);
 		}
 		content.remove(list);
 		list = new JList(commands.toArray());
-		content.add(list,c);
+		content.add(list, c);
 		content.revalidate();
-		list.setSelectedIndex(selected-1);
+		list.setSelectedIndex(selected - 1);
 	}
 
 	private void moveDown() {
-		int selected= list.getSelectedIndex();
-		if(selected>=0) {
-			Collections.swap(commands,selected,selected+1);
+		int selected = list.getSelectedIndex();
+		if (selected >= 0) {
+			Collections.swap(commands, selected, selected + 1);
 			ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
 			currentCommand.changeSequence(selected + 1, selected);
 		}
 		content.remove(list);
 		list = new JList(commands.toArray());
-		content.add(list,c);
+		content.add(list, c);
 		content.revalidate();
-		list.setSelectedIndex(selected+1);
+		list.setSelectedIndex(selected + 1);
 	}
 
 	private void removeCommand() {
 		int selected = list.getSelectedIndex();
-		if(selected>=0) {
+		if (selected >= 0) {
 			commands.remove(selected);
 			ComplexCommand currentCommand = (ComplexCommand) commandManager.getCurrentCommand();
 			currentCommand.removeCommand(selected);
@@ -130,7 +145,7 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
 		}
 		content.remove(list);
 		list = new JList(commands.toArray());
-		content.add(list,c);
+		content.add(list, c);
 		content.revalidate();
 	}
 
@@ -154,11 +169,11 @@ public class CommandEditorWindow extends JFrame implements WindowComponent {
 				commandCount++;
 			}
 			list = new JList(commands.toArray());
-			content.add(list,c);
+			content.add(list, c);
 			content.revalidate();
 		}
 	}
-	
+
 	@Override
 	public void HideIfVisibleAndShowIfHidden() {
 
